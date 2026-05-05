@@ -1,0 +1,30 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+PROJECT_DIR="$HOME/scifi_aaa"
+BRANCH="main"
+
+MSG="full sync $(date '+%Y-%m-%d %H:%M:%S')"
+
+echo "➡ Belépés a projekt mappába..."
+cd "$PROJECT_DIR" || { echo "❌ Nincs meg a mappa!"; exit 1; }
+
+echo "➡ Git státusz ellenőrzés..."
+git status
+
+echo "➡ Minden fájl hozzáadása..."
+git add .
+
+echo "➡ Commit készítése..."
+
+# Ha nincs változás, ne hibázzon
+if git diff --cached --quiet; then
+  echo "✅ Nincs változás, nincs commit."
+  exit 0
+fi
+
+git commit -m "$MSG"
+
+echo "➡ Push GitHub-ra..."
+git push origin "$BRANCH"
+
+echo "✅ Minden fájl feltöltve!"
